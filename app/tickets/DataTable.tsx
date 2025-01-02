@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Ticket } from "@prisma/client";
+import Link from "next/link";
 import React from "react";
 
 interface PropsDataTable {
@@ -38,11 +39,12 @@ const DataTable = ({ tickets }: PropsDataTable) => {
             {tickets
               ? tickets.map((item) => (
                   <TableRow key={item.id} data-href="/">
-                    <TableCell>{item.title}</TableCell>
+                    <TableCell><Link href={`/tickets/${item.id}`}>{item.title}</Link></TableCell>
                     <TableCell>
                       <div className="flex justify-center">
                         <TicketStatusBadge status={item.status} />
-                      </div>
+                    </div>
+                    
                     </TableCell>
                     <TableCell>
                       <div className="flex justify-center">
