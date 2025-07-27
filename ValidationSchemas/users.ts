@@ -1,0 +1,25 @@
+import { z } from "zod";
+
+export const userSchema = z.object({
+  name: z.string().min(3, "Name is required ").max(255),
+  username: z.string().min(3, "Username is required ").max(255),
+  password: z
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .max(255),
+  role: z.string().min(3, "Role is required").max(10),
+});
+
+export const updateUserSchema = z.object({
+  name: z.string().min(3, "Name is required").max(255),
+  username: z.string().min(3, "Username is required").max(255),
+  password: z
+    .string()
+    .max(255)
+    .optional()
+    .refine(
+      (val) => !val || val.length >= 6,
+      { message: "Password must be at least 6 characters" }
+    ),
+  role: z.enum(["USER", "TECH", "ADMIN"]),
+});

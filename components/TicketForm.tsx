@@ -19,6 +19,7 @@ import { Button } from "./ui/button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Ticket } from "@prisma/client";
+import AssignTicket from "./AssignTicket";
 
 type TicketFormData = z.infer<typeof ticketSchema>;
 
@@ -34,7 +35,6 @@ const TicketForm = ({ ticket }: Props) => {
   const router = useRouter();
 
   async function onSubmit(values: z.infer<typeof ticketSchema>) {
-    console.log("values", values);
 
     try {
       setIsSubmiting(true);
@@ -142,6 +142,7 @@ const TicketForm = ({ ticket }: Props) => {
                 </FormItem>
               )}
             />
+            
           </div>
           <Button type="submit" disabled={isSubmiting}>
             { ticket ? 'Update Ticket' : 'Create Ticket' }

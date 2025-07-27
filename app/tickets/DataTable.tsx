@@ -11,12 +11,15 @@ import {
 import { Ticket } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
+import { ArrowDown, ArrowUp } from "lucide-react";
+import { SearchParams } from "./page";
 
 interface PropsDataTable {
   tickets: Ticket[];
+  searchParams: SearchParams;
 }
 
-const DataTable = ({ tickets }: PropsDataTable) => {
+const DataTable = ({ tickets, searchParams }: PropsDataTable) => {
   console.log("tickets -> dataTable", tickets);
 
   return (
@@ -25,26 +28,101 @@ const DataTable = ({ tickets }: PropsDataTable) => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Title</TableHead>
               <TableHead>
-                <div className="flex justify-center">Status</div>
+                <Link
+                  href={{
+                    query: {
+                      ...searchParams,
+                      orderBy: "title",
+                      sortDir: searchParams.sortDir === "asc" ? "desc" : "asc",
+                    },
+                  }}
+                >
+                  Title
+                  {"title" === searchParams.orderBy &&
+                    (searchParams.sortDir === "asc" ? (
+                      <ArrowUp className="inline p-1" />
+                    ) : (
+                      <ArrowDown className="inline p-1" />
+                    ))}
+                </Link>
               </TableHead>
               <TableHead>
-                <div className="flex justify-center">Priority</div>
+                <div className="flex justify-center">
+                  <Link
+                    href={{
+                      query: {
+                        ...searchParams,
+                        orderBy: "status",
+                        sortDir:
+                          searchParams.sortDir === "asc" ? "desc" : "asc",
+                      },
+                    }}
+                  >
+                    Status
+                    {"status" === searchParams.orderBy &&
+                      (searchParams.sortDir === "asc" ? (
+                        <ArrowUp className="inline p-1" />
+                      ) : (
+                        <ArrowDown className="inline p-1" />
+                      ))}
+                  </Link>
+                </div>
               </TableHead>
-              <TableHead>CreatedAt</TableHead>
+              <TableHead>
+                <div className="flex justify-center">
+                  <Link
+                    href={{
+                      query: {
+                        ...searchParams,
+                        orderBy: "priority",
+                        sortDir:
+                          searchParams.sortDir === "asc" ? "desc" : "asc",
+                      },
+                    }}
+                  >
+                    Priority
+                    {"priority" === searchParams.orderBy &&
+                      (searchParams.sortDir === "asc" ? (
+                        <ArrowUp className="inline p-1" />
+                      ) : (
+                        <ArrowDown className="inline p-1" />
+                      ))}
+                  </Link>
+                </div>
+              </TableHead>
+              <TableHead>
+                <Link
+                  href={{
+                    query: {
+                      ...searchParams,
+                      orderBy: "createdAt",
+                      sortDir: searchParams.sortDir === "asc" ? "desc" : "asc",
+                    },
+                  }}
+                >
+                  CreatedAt
+                  {"createdAt" === searchParams.orderBy &&
+                    (searchParams.sortDir === "asc" ? (
+                      <ArrowUp className="inline p-1" />
+                    ) : (
+                      <ArrowDown className="inline p-1" />
+                    ))}
+                </Link>
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {tickets
               ? tickets.map((item) => (
                   <TableRow key={item.id} data-href="/">
-                    <TableCell><Link href={`/tickets/${item.id}`}>{item.title}</Link></TableCell>
+                    <TableCell>
+                      <Link href={`/tickets/${item.id}`}>{item.title}</Link>
+                    </TableCell>
                     <TableCell>
                       <div className="flex justify-center">
                         <TicketStatusBadge status={item.status} />
-                    </div>
-                    
+                      </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex justify-center">
